@@ -17,11 +17,11 @@
     "url": "https://github.com/Apollon77/ioBroker.homekit-controller"
   },
   "dependencies": {
+    "@esm2cjs/p-queue": "^7.3.0",
     "@iobroker/adapter-core": "^3.2.2",
     "bignumber.js": "^9.1.2",
     "debug": "^4.3.7",
-    "hap-controller": "^0.10.2",
-    "@esm2cjs/p-queue": "^7.3.0"
+    "hap-controller": "^0.10.2"
   },
   "devDependencies": {
     "@alcalzone/release-script": "^3.8.0",
@@ -62,6 +62,7 @@
   },
   "main": "build/main.js",
   "scripts": {
+    "postinstall": "node scripts/apply-hap-patch.js",
     "prebuild": "rimraf ./build",
     "build:ts": "tsc -p tsconfig.build.json",
     "build": "npm run build:ts && npm run buildGui",
