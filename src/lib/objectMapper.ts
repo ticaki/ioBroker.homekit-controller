@@ -281,7 +281,9 @@ export function addCharacteristicObjects(device: HapDevice, objs: Map<string, io
     }
 
     let characteristicName = characteristicFromUuid(characteristic.type);
-    const iobrokerCommon = CharacteristicToIoBrokerMap[characteristicName] || {};
+    // Shallow copy: the mapping entry gets mutated below (name/convert/states deleted) and must not
+    // change the shared table, otherwise only the first characteristic of a type gets the mapping
+    const iobrokerCommon: Record<string, unknown> = { ...(CharacteristicToIoBrokerMap[characteristicName] || {}) };
     if (typeof iobrokerCommon.name === 'string') {
         characteristicName = iobrokerCommon.name;
         delete iobrokerCommon.name;
