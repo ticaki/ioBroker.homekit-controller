@@ -274,7 +274,9 @@ function addCharacteristicObjects(device, objs, accessory, service, characterist
         serviceName = serviceName.substr(19).replace(/\./g, '-'); // remove public.hap.service.
     }
     let characteristicName = (0, characteristic_1.characteristicFromUuid)(characteristic.type);
-    const iobrokerCommon = CharacteristicToIoBrokerMap[characteristicName] || {};
+    // Shallow copy: the mapping entry gets mutated below (name/convert/states deleted) and must not
+    // change the shared table, otherwise only the first characteristic of a type gets the mapping
+    const iobrokerCommon = { ...(CharacteristicToIoBrokerMap[characteristicName] || {}) };
     if (typeof iobrokerCommon.name === 'string') {
         characteristicName = iobrokerCommon.name;
         delete iobrokerCommon.name;
